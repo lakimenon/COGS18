@@ -1,6 +1,10 @@
+#IMPORTS###########################################################################
 import pygame
 import time
 import random
+
+#CLASSES############################################################################
+
 
 class ScreenObjects:
     
@@ -23,25 +27,24 @@ class Player(ScreenObjects):
     def __init__(self, x, y, height, width, x_change):
         super().__init__(x, y, height, width)
         self.x_change = x_change
+
+class Present(ScreenObjects):
     
-class Coin(ScreenObjects):
-    
-    def __init__(self, x, y, height, width, speed, color):
+    def __init__(self, x, y, height, width, speed):
         super().__init__(x, y, height, width)
         self.speed = speed
-        self.color = color
 
-class Obstacle(ScreenObjects):
+class Rock(ScreenObjects):
     
-    def __init__(self, x, y, height, width, speed, color):
+    def __init__(self, x, y, height, width, speed):
         super().__init__(x, y, height, width)
         self.speed = speed
-        self.color = color
 
-
-def coins_collected(count):
+#FUNCTIONS#########################################################################
+    
+def presents_collected(count):
     font = pygame.font.SysFont("freesansbold.ttf", 25)
-    text = font.render("Coins: "+str(count), True, black)
+    text = font.render("Presents: "+str(count), True, black)
     gameDisplay.blit(text,(0,0))
 
 def display_high_score(score):
@@ -49,11 +52,11 @@ def display_high_score(score):
     text = font.render("High Score: "+str(score), True, black)
     gameDisplay.blit(text,(0, 25))
 
-def display_obstacles(x, y, w, h, color):
-    pygame.draw.rect(gameDisplay, color, [x, y, w, h])
+def display_presents(x,y):
+    gameDisplay.blit(presentIcon,(x,y))
 
-def display_coins(x, y, w, h, color):
-    pygame.draw.rect(gameDisplay, color, [x, y, w, h])
+def display_rocks(x,y):
+    gameDisplay.blit(rockIcon,(x,y))    
 
 def display_player(x,y):
     gameDisplay.blit(playerIcon,(x,y))
@@ -62,10 +65,10 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
  
-def crash():
-    largeText = pygame.font.SysFont("freesansbold.ttf",115)
-    TextSurf, TextRect = text_objects("You Crashed", largeText)
-    TextRect.center = ((display_width/2),(display_height/2))
+def rock_collected():
+    largeText = pygame.font.SysFont("freesansbold.ttf",80)
+    TextSurf, TextRect = text_objects("You Collected A Rock :(", largeText)
+    TextRect.center = ((display_width/2),(display_height/3))
     gameDisplay.blit(TextSurf, TextRect)
     
 
@@ -91,7 +94,7 @@ def button(button, action=None):
     else:
         pygame.draw.rect(gameDisplay, button.inactive_color, (button.x, button.y, button.width, button.height))
         
-    smallText = pygame.font.SysFont("freesansbold.ttf",20)
+    smallText = pygame.font.SysFont("freesansbold.ttf",25)
     textSurf, textRect = text_objects(button.msg, smallText)
     textRect.center = ( (button.x+(button.width/2)), (button.y+(button.height/2)) )
     gameDisplay.blit(textSurf, textRect)
@@ -114,8 +117,25 @@ def game_intro():
         gameDisplay.fill(white)
         largeText = pygame.font.SysFont("freesansbold.ttf",115)
         TextSurf, TextRect = text_objects("Let's Play!", largeText)
-        TextRect.center = ((display_width/2),(display_height/2))
+        TextRect.center = ((display_width/2),(display_height/3))
+
+        word_width1, word_height1 = TextSurf.get_size()
+
+        medText = pygame.font.SysFont("freesansbold.ttf",40)
+        description_line1 = "Collect presents and avoid rocks!"
+        TextSurf2, TextRect2 = text_objects(description_line1, medText)
+        TextRect2.center = ((display_width/2),(display_height/3 + word_height1))
+
+        word_width2, word_height2 = TextSurf2.get_size()
+
+        description_line2= "Use the left and right arrow keys to move. Good luck!"
+        TextSurf3, TextRect3 = text_objects(description_line2, medText)
+        TextRect3.center = ((display_width/2),(display_height/3 + word_height1 + word_height2))
+        
         gameDisplay.blit(TextSurf, TextRect)
+        gameDisplay.blit(TextSurf2, TextRect2)
+        gameDisplay.blit(TextSurf3, TextRect3)
+
 
         button(go_button, game_loop)
         button(quit_button, quitgame)
@@ -131,47 +151,20 @@ def overlap(player, item):
         overlapped = left_overlap or right_overlap or middle_overlap
         return overlapped  
 
-display_width = 800
-display_height = 600
-
-
-black = (0,0,0)
-white = (255, 255, 255)
-red = (200, 0, 0)
-green = (0, 200, 0)
-bright_red = (255, 0, 0)
-bright_green = (0, 255, 0)
-obstacle_color = (53, 115, 255)
-coin_color = (156, 200, 120)
-
-play_button = Button(150, 450, 50, 100, bright_green, green, "Play Again")
-quit_button = Button(550, 450, 50, 100, bright_red, red, "Quit")
-go_button = Button(150, 450, 50, 100, bright_green, green, "Go!")
-
-high_score = 0
-
-gameDisplay = pygame.display.set_mode((display_width, display_height))
-pygame.display.set_caption("Game")
-clock = pygame.time.Clock()
-playerIcon = pygame.image.load('racecar.png')
-
-
-
-
 def game_loop():
     
     global high_score
 
     x = (display_width * 0.45)
     y = (display_height * 0.8)
-    player = Player(x, y, 100, 80, 0)
+    player = Player(x, y, 94, 139, 0)
  
     startx = random.randrange(0, display_width) 
-    obstacle = Obstacle(startx, -600, 100, 100, 4, obstacle_color)
-    coin = Coin(startx, -100, 50, 50, 10, coin_color)
 
- 
-    coin_count = 0
+    rock = Rock(startx, -600, 48, 69, 4)
+    present = Present(startx, -100, 98, 82, 10)
+
+    present_count = 0
 
  
     gameExit = False
@@ -185,55 +178,85 @@ def game_loop():
  
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    player.x_change = -5
+                    player.x_change = -7
                 if event.key == pygame.K_RIGHT:
-                    player.x_change = 5                   
+                    player.x_change = 7                   
  
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     player.x_change = 0
  
         player.x += player.x_change
-        gameDisplay.fill(white)
+        gameDisplay.fill(bg_color)
  
-        display_obstacles(obstacle.x, obstacle.y, obstacle.width, obstacle.height, obstacle.color)
-        display_coins(coin.x, coin.y, coin.width, coin.height, coin.color)
- 
-        obstacle.y += obstacle.speed
-        coin.y += coin.speed
+
+        display_rocks(rock.x, rock.y)
+        display_presents(present.x, present.y)
+
 
         display_player(player.x, player.y)
-        coins_collected(coin_count)
+        presents_collected(present_count)
         display_high_score(high_score)
  
-        if player.x > display_width - player.width or player.x < 0:
-            if coin_count > high_score:
-                high_score = coin_count
-            crash()
- 
-        if obstacle.y > display_height:
-            obstacle.y = 0 - obstacle.height
-            obstacle.x = random.randrange(0,int(display_width-obstacle.width))
-            obstacle.speed += 1
-            obstacle.width = random.randint(70, 100)
-            obstacle.height = obstacle.width
+        if player.x > display_width - player.width:
+            player.x = display_width - player.width
 
-        if overlap(player, coin):
-            coin_count += 1
-            coin.y = 0 - coin.height
-            coin.x = random.randrange(0,int(display_width-coin.width))
+        if player.x < 0:
+            player.x = 0
  
-        if coin.y > display_height:
-            coin.y = 0 - coin.height
-            coin.x = random.randrange(0,int(display_width-coin.width))
+        if rock.y > display_height:
+            rock.y = 0 - rock.height
+            rock.x = random.randrange(0,int(display_width-rock.width))
+            rock.speed += 1
+
+        if overlap(player, present):
+            present_count += 1
+            present.y = 0 - present.height
+            present.x = random.randrange(0,int(display_width-present.width))
+ 
+        if present.y > display_height:
+            present.y = 0 - present.height
+            present.x = random.randrange(0,int(display_width-present.width))
         
-        if overlap(player, obstacle):
-            if coin_count > high_score:
-                high_score = coin_count
-            crash()
+        if overlap(player, rock):
+            if present_count > high_score:
+                high_score = present_count
+            rock_collected()
+
+        rock.y += rock.speed
+        present.y += present.speed
 
 
         
         pygame.display.update()
         clock.tick(60)
 
+#SETUP#############################################################################
+
+display_width = 800
+display_height = 600
+
+black = (0,0,0)
+white = (255, 255, 255)
+red = (200, 0, 0)
+green = (0, 200, 0)
+bright_red = (255, 0, 0)
+bright_green = (0, 255, 0)
+bg_color = (53, 115, 255)
+
+high_score = 0
+
+play_button = Button(150, 450, 50, 100, bright_green, green, "Play Again")
+quit_button = Button(550, 450, 50, 100, bright_red, red, "Quit")
+go_button = Button(150, 450, 50, 100, bright_green, green, "Go!")
+
+gameDisplay = pygame.display.set_mode((display_width, display_height))
+pygame.display.set_caption("Let's Play!")
+clock = pygame.time.Clock()
+
+playerIcon = pygame.image.load('basket.png')
+presentIcon = pygame.image.load('present.png')
+rockIcon = pygame.image.load('rock.png')
+
+###################################################################################
+###################################################################################
