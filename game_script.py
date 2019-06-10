@@ -1,9 +1,14 @@
-import pygame
-import functions
+""" Module containing calls to the functions required to run the game. """
 
-#functions.game_setup()
+import pygame
+import functions_only
+
 pygame.init()
-functions.game_intro()
-functions.game_loop()
+functions_only.game_intro()
+
+#game_loop contains all the function calls necessary to run the game
+#game_loop continues to loop until the player decides to quit the game
+functions_only.game_loop()	
+
 pygame.quit()
 quit() 
