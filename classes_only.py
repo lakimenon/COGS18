@@ -3,10 +3,10 @@
 import pygame
 
 class ScreenObjects:
-    """ Super class for all objects displayed on the screen."""   
-    
+    """ Super class for all objects displayed on the screen."""
+
     def __init__(self, x, y, height, width):
-        """ Function to initialize the object and its attributes 
+        """ Function to initialize the object and its attributes
 
         Parameters:
         -----------
@@ -21,7 +21,7 @@ class ScreenObjects:
 
         width : float
             The width of the object
-        """    
+        """
         self.x = x
         self.y = y
         self.height = height
@@ -29,9 +29,9 @@ class ScreenObjects:
 
 class Button(ScreenObjects):
     """ Subclass for the buttons on the screen """
-    
+
     def __init__(self, x, y, height, width, active_color, inactive_color, msg, action):
-        """ Function to initialize the object and its attributes 
+        """ Function to initialize the object and its attributes
 
         Parameters:
         -----------
@@ -48,18 +48,18 @@ class Button(ScreenObjects):
 
         action : function name
             Name of the function to be executed when the button is clicked
-        """ 
+        """
         super().__init__(x, y, height, width)
         self.active_color = active_color
         self.inactive_color = inactive_color
         self.msg = msg
         self.action = action
-    
+
 class Player(ScreenObjects):
     """ Subclass for the player icon """
-    
+
     def __init__(self, icon, x, y, height, width, x_change):
-        """ Function to initialize the object and its attributes 
+        """ Function to initialize the object and its attributes
 
         Parameters:
         -----------
@@ -70,16 +70,16 @@ class Player(ScreenObjects):
 
         x_change : float
             Change in x value when arrow keys are pressed
-        """ 
+        """
         super().__init__(x, y, height, width)
         self.icon = pygame.image.load(icon)
         self.x_change = x_change
 
 class Present(ScreenObjects):
     """ Subclass for the presents """
-    
+
     def __init__(self, icon, x, y, height, width, speed):
-        """ Function to initialize the object and its attributes 
+        """ Function to initialize the object and its attributes
 
         Parameters:
         -----------
@@ -90,7 +90,7 @@ class Present(ScreenObjects):
 
         speed : float
             Speed at which the present falls
-        """ 
+        """
         super().__init__(x, y, height, width)
         self.icon = pygame.image.load(icon)
         self.speed = speed
@@ -99,7 +99,7 @@ class Rock(ScreenObjects):
     """ Subclass for the rocks """
 
     def __init__(self, icon, x, y, height, width, speed):
-        """ Function to initialize the object and its attributes 
+        """ Function to initialize the object and its attributes
 
         Parameters:
         -----------
@@ -110,7 +110,7 @@ class Rock(ScreenObjects):
 
         speed : float
             Speed at which the rock falls
-        """ 
+        """
         super().__init__(x, y, height, width)
         self.icon = pygame.image.load(icon)
         self.speed = speed

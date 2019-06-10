@@ -3,12 +3,10 @@
 import pygame
 import functions_only
 
-pygame.init()
-functions_only.game_intro()
+pygame.init()	#initializing pygame
 
-#game_loop contains all the function calls necessary to run the game
-#game_loop continues to loop until the player decides to quit the game
-functions_only.game_loop()	
+functions_only.game_intro()	#displays the intro screen
+functions_only.game_loop()	#game_loop continues to loop until the player quits
 
 pygame.quit()
-quit() 
+quit()
