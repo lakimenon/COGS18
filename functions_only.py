@@ -36,7 +36,8 @@ def display_objects(item):
     GAME_DISPLAY.blit(item.icon, (item.x, item.y))
 
 def text_objects(text, font):
-    """ Function to create a rectangle containing text
+    """ Function to create a rectangle containing text 
+        (This function was adapted from online resource, see notebook for link)
 
     Parameters:
     -----------
@@ -51,6 +52,7 @@ def text_objects(text, font):
 
 def display_button(button):
     """ Function to display buttons on the screen
+    (This function was adapted from online resource, see notebook for link)
 
     Parameters:
     -----------
@@ -111,8 +113,9 @@ def overlap(player, item):
         return overlapped
 
 def rock_collected():
-    """ Function to display game over screen when player loses"""
-
+    """ Function to display game over screen when player loses
+    (This function was adapted from online resource, see notebook for link)
+    """
     #Display message indicating that player has lost
     med_text2 = pygame.font.SysFont("freesansbold.ttf", 80)
     text_surf, text_rect = text_objects("You Collected A Rock :(", med_text2)
@@ -133,12 +136,16 @@ def rock_collected():
         CLOCK.tick(15)
 
 def quitgame():
-    """ Function to end the game and close the window"""
+    """ Function to end the game and close the window
+    (This function was adapted from online resource, see notebook for link)
+    """
     pygame.quit()
     quit()
 
 def game_intro():
-    """ Function to display the intro screen"""
+    """ Function to display the intro screen
+    (This function was adapted from online resource, see notebook for link)
+    """
 
     while True:
         for event in pygame.event.get():
@@ -180,6 +187,7 @@ def game_intro():
 def game_loop():
     """ Main function to play the game, which continues to loop until the game is ended.
         This function contains calls to other functions as needed.
+        (This function was adapted from online resource, see notebook for link)
      """
 
     #High score is made global to ensure that it does not reset to 0 when a new game is started
