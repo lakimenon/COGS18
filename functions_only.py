@@ -105,12 +105,13 @@ def overlap(player, item):
     overlapped : boolean
         True if there is an overlap between player and item, else False
     """
-    if player.y < item.y + item.height:
-        left_overlap = item.x < player.x < item.x + item.width
-        right_overlap = item.x < player.x + player.width < item.x + item.width
+    overlapped = False
+    if player.y <= item.y + item.height:
+        left_overlap = item.x <= player.x <= item.x + item.width
+        right_overlap = item.x <= player.x + player.width <= item.x + item.width
         middle_overlap = player.x < item.x and player. x + player.width > item.x + item.width
         overlapped = left_overlap or right_overlap or middle_overlap
-        return overlapped
+    return overlapped
 
 def rock_collected():
     """ Function to display game over screen when player loses
