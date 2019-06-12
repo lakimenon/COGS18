@@ -17,6 +17,7 @@ File Structure:
 		- player.png
 	- tests.py
 	- requirements.txt
+	-ProjectNotebook.ipynb
 
 To run game:
 - In the terminal, navigate to the folder containing game_script.py and the folders game_module and icons
