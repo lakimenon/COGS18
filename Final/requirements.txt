@@ -1,0 +1,27 @@
+Requirements:
+- pygame module must be installed
+- required files: 
+	- game_script.py
+	- game_module file containing functions.py and classes.py
+	- icons file containing basket.png, rock.png, and present.png
+
+File Structure:
+./Final
+	- game_script.py
+	-/game_module
+		- functions.py
+		- classes.py
+	-/icons
+		- present.png
+		- rock.png
+		- player.png
+	- tests.py
+	- requirements.txt
+
+To run game:
+- In the terminal, navigate to the folder containing game_script.py and the folders game_module and icons
+- Type the command python game_script.py
+
+To run tests:
+- In the terminal, navigate to the folder containing game_script.py and the folders game_module and icons
+- Type the command pytest tests.py
